@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Andrew Jeyabose — AI Research Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg2: #0f1520;
+    --bg3: #141c2b;
+    --surface: #1a2438;
+    --border: rgba(99,180,255,0.12);
+    --accent: #4fa3e8;
+    --accent2: #38d9a9;
+    --accent3: #f59e42;
+    --text: #e8f0fe;
+    --muted: #8ba5cc;
+    --faint: #3a4a62;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'Outfit', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(10,14,20,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(79,163,232,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,163,232,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 100%);
+  }
+  .hero-orb {
+    position: absolute; top: 15%; right: 8%;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, rgba(56,217,169,0.07), transparent 70%),
+                radial-gradient(circle at 70% 70%, rgba(79,163,232,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 860px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+    color: var(--accent2); text-transform: uppercase;
+    border: 1px solid rgba(56,217,169,0.25);
+    background: rgba(56,217,169,0.05);
+    padding: 0.35rem 0.85rem; border-radius: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-tag::before { content: '●'; font-size: 0.5rem; }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 580px;
+    margin: 1.25rem 0 2.5rem;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.2rem;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.88rem; font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #6bb8f0; transform: translateY(-1px); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid var(--faint);
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.88rem; font-weight: 500;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 6rem 3rem; position: relative; z-index: 1; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .divider { width: 3rem; height: 2px; background: var(--accent); margin-bottom: 3rem; }
+
+  /* ─── ABOUT / INTERESTS ─── */
+  .about-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem;
+    align-items: start;
+  }
+  .about-body { color: var(--muted); font-size: 1rem; line-height: 1.85; }
+  .about-body p + p { margin-top: 1rem; }
+  .interest-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .interest-item {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    font-size: 0.88rem;
+  }
+  .interest-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent2); margin-top: 0.45rem; flex-shrink: 0;
+  }
+  .interest-item strong { color: var(--text); display: block; font-size: 0.82rem; margin-bottom: 0.1rem; }
+  .interest-item span { color: var(--muted); }
+
+  /* ─── TECH STACK ─── */
+  #stack { background: var(--bg2); }
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .stack-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 0.8rem;
+    padding: 1.25rem 1.4rem;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .stack-card:hover { border-color: rgba(79,163,232,0.35); transform: translateY(-2px); }
+  .stack-title {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.85rem;
+  }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-family: var(--mono); font-size: 0.72rem;
+    background: rgba(79,163,232,0.08);
+    border: 1px solid rgba(79,163,232,0.18);
+    color: var(--accent);
+    padding: 0.25rem 0.6rem; border-radius: 0.35rem;
+  }
+
+  /* ─── PROJECTS ─── */
+  .proj-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .proj-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.75rem;
+    display: flex; flex-direction: column;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .proj-card:hover { border-color: rgba(79,163,232,0.4); transform: translateY(-3px); }
+  .proj-card.featured { border-color: rgba(56,217,169,0.3); }
+  .proj-badge {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--accent2); border: 1px solid rgba(56,217,169,0.3);
+    background: rgba(56,217,169,0.05);
+    display: inline-block; padding: 0.2rem 0.6rem; border-radius: 1rem;
+    margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .proj-title {
+    font-family: var(--serif); font-size: 1.2rem;
+    color: var(--text); margin-bottom: 0.6rem;
+  }
+  .proj-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; flex: 1; }
+  .proj-footer {
+    margin-top: 1.25rem; padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .proj-pub { font-size: 0.75rem; color: var(--accent3); font-family: var(--mono); }
+  .proj-link {
+    font-size: 0.78rem; color: var(--accent); text-decoration: none;
+    border: 1px solid rgba(79,163,232,0.25); padding: 0.3rem 0.75rem;
+    border-radius: 0.35rem; transition: background 0.2s;
+  }
+  .proj-link:hover { background: rgba(79,163,232,0.1); }
+
+  /* ─── PUBLICATIONS ─── */
+  #pubs { background: var(--bg2); }
+  .pub-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+  .pub-item {
+    padding: 1.5rem;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 0.8rem;
+    display: grid; grid-template-columns: auto 1fr; gap: 1rem;
+    align-items: start;
+  }
+  .pub-num {
+    font-family: var(--mono); font-size: 0.75rem; color: var(--faint);
+    padding-top: 0.15rem;
+  }
+  .pub-title { font-size: 0.95rem; color: var(--text); margin-bottom: 0.3rem; }
+  .pub-meta { font-size: 0.8rem; color: var(--muted); font-family: var(--mono); }
+  .pub-venue { color: var(--accent3); }
+
+  /* ─── RECOGNITION ─── */
+  .rec-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .rec-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 0.8rem; padding: 1.25rem;
+    text-align: center;
+  }
+  .rec-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .rec-label { font-size: 0.82rem; color: var(--text); font-weight: 500; }
+  .rec-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; font-family: var(--mono); }
+
+  /* ─── CONTACT ─── */
+  #contact { text-align: center; }
+  .contact-card {
+    max-width: 580px; margin: 0 auto;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 1.2rem; padding: 3rem;
+  }
+  .contact-card p { color: var(--muted); margin-bottom: 2rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-family: var(--mono);
+    border: 1px solid var(--faint); padding: 0.6rem 1.25rem;
+    border-radius: 0.5rem; transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--faint); font-size: 0.78rem; font-family: var(--mono);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section, #hero { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { gap: 1.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Andrew Jeyabose</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#pubs">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <div class="hero-tag fade-up delay-1">AI Research Engineer · UNC Chapel Hill</div>
+    <h1 class="fade-up delay-2">
+      Andrew<br><em>Jeyabose</em><br>Sundar, Ph.D.
+    </h1>
+    <p class="hero-sub fade-up delay-3">
+      Building deep learning systems that decode high-dimensional biological imaging data — from rs-fMRI and histopathology to volumetric MRI. I work at the intersection of self-supervised learning, Vision Transformers, and scalable production ML.
+    </p>
+    <div class="hero-stats fade-up delay-3">
+      <div>
+        <div class="stat-num">90+</div>
+        <div class="stat-label">Publications</div>
+      </div>
+      <div>
+        <div class="stat-num">2,250+</div>
+        <div class="stat-label">Citations</div>
+      </div>
+      <div>
+        <div class="stat-num">h-22</div>
+        <div class="stat-label">h-index</div>
+      </div>
+      <div>
+        <div class="stat-num">Top 2%</div>
+        <div class="stat-label">Stanford/Elsevier</div>
+      </div>
+    </div>
+    <div class="hero-ctas fade-up delay-4">
+      <a class="btn-primary" href="https://scholar.google.com/citations?user=4td6IKQAAAAJ" target="_blank">Google Scholar ↗</a>
+      <a class="btn-outline" href="https://www.linkedin.com/in/andrew-jeyabose/" target="_blank">LinkedIn</a>
+      <a class="btn-outline" href="mailto:andrewj.research@gmail.com">Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 — About</div>
+  <h2>Research Focus</h2>
+  <div class="divider"></div>
+  <div class="about-grid">
+    <div class="about-body">
+      <p>I am a Research Associate and Technical AI Lead at UNC Chapel Hill, leading the NIH R01NS125897 grant ($1.24M) focused on epilepsy AI and brain network recovery. My work bridges representation learning for biological images with clinical applications that can improve patient outcomes.</p>
+      <p>Recognized by Stanford/Elsevier as a Top 2% Scientist Worldwide (2024, 2025), I serve as an IEEE Senior Member, Associate Editor at Scientific Reports and PLOS ONE, and have reviewed over 200 manuscripts across IEEE, Elsevier, Springer, and Nature journals.</p>
+      <p>My core belief: the most impactful AI systems are those that can extract meaning from the richest, noisiest data we have — the imagery of life itself.</p>
+    </div>
+    <ul class="interest-list">
+      <li class="interest-item">
+        <div class="interest-dot"></div>
+        <div>
+          <strong>Self-supervised & Contrastive Learning</strong>
+          <span>SimCLR, MoCo, DINO, MAE for biological image pre-training</span>
+        </div>
+      </li>
+      <li class="interest-item">
+        <div class="interest-dot"></div>
+        <div>
+          <strong>Vision Transformers</strong>
+          <span>ViT & Swin for 3D/4D volumetric image understanding</span>
+        </div>
+      </li>
+      <li class="interest-item">
+        <div class="interest-dot"></div>
+        <div>
+          <strong>Multimodal Representation Learning</strong>
+          <span>Fusing imaging and non-imaging biological data</span>
+        </div>
+      </li>
+      <li class="interest-item">
+        <div class="interest-dot"></div>
+        <div>
+          <strong>Medical Image Segmentation</strong>
+          <span>Instance segmentation & detection on medical imaging data</span>
+        </div>
+      </li>
+      <li class="interest-item">
+        <div class="interest-dot"></div>
+        <div>
+          <strong>Production ML Systems</strong>
+          <span>Large-scale distributed training and deployment</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="section-label">02 — Tech Stack</div>
+  <h2>Tools & Technologies</h2>
+  <div class="divider"></div>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-title">Deep Learning</div>
+      <div class="stack-tags">
+        <span class="tag">PyTorch</span>
+        <span class="tag">TensorFlow</span>
+        <span class="tag">Hugging Face</span>
+        <span class="tag">PyG</span>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-title">SSL Methods</div>
+      <div class="stack-tags">
+        <span class="tag">SimCLR</span>
+        <span class="tag">MoCo</span>
+        <span class="tag">DINO</span>
+        <span class="tag">MAE</span>
+        <span class="tag">SAM</span>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-title">CV Architectures</div>
+      <div class="stack-tags">
+        <span class="tag">ViT</span>
+        <span class="tag">Swin Transformer</span>
+        <span class="tag">U-Net</span>
+        <span class="tag">SegFormer</span>
+        <span class="tag">ResNet</span>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-title">Medical Imaging</div>
+      <div class="stack-tags">
+        <span class="tag">NiBabel</span>
+        <span class="tag">Nilearn</span>
+        <span class="tag">ITK</span>
+        <span class="tag">fMRI</span>
+        <span class="tag">MRI</span>
+        <span class="tag">WSI</span>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-title">MLOps</div>
+      <div class="stack-tags">
+        <span class="tag">MLflow</span>
+        <span class="tag">W&B</span>
+        <span class="tag">Docker</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">CI/CD</span>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-title">Infrastructure</div>
+      <div class="stack-tags">
+        <span class="tag">PyTorch DDP</span>
+        <span class="tag">Horovod</span>
+        <span class="tag">HPC Clusters</span>
+        <span class="tag">Python</span>
+        <span class="tag">C++</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">03 — Projects</div>
+  <h2>Featured Work</h2>
+  <div class="divider"></div>
+  <div class="proj-grid">
+    <div class="proj-card featured">
+      <span class="proj-badge">Featured · Published</span>
+      <div class="proj-title">fMRI Contrastive Pre-training</div>
+      <p class="proj-desc">SimCLR-based framework learning joint representations from 4D fMRI time-series and clinical measurements. Dual-branch spatiotemporal encoder (3D CNN spatial + 1D CNN temporal), domain-specific fMRI augmentation strategy, and NT-Xent contrastive loss. Achieves state-of-the-art on whole-brain network retrieval and pre/post-surgery classification.</p>
+      <div class="proj-footer">
+        <span class="proj-pub">BioMedical Engineering OnLine · 2025</span>
+        <a class="proj-link" href="https://github.com/andrew-jeyabose/fmri-contrastive-pretraining" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge">Under Review</span>
+      <div class="proj-title">Transformer fMRI Epilepsy Classifier</div>
+      <p class="proj-desc">Interpretable Vision Transformer models for rs-fMRI epilepsy classification and biomarker discovery. Focuses on explainability and clinical utility for neurology applications.</p>
+      <div class="proj-footer">
+        <span class="proj-pub">medRxiv → Scientific Reports</span>
+        <a class="proj-link" href="https://github.com/andrew-jeyabose/fmri-regularized-transformer" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge">Published</span>
+      <div class="proj-title">fMRI Spatiotemporal Segmentation</div>
+      <p class="proj-desc">Multimodal deep learning framework for functional brain network classification in rs-fMRI, combining spatial and temporal representations for richer network analysis.</p>
+      <div class="proj-footer">
+        <span class="proj-pub">Cognitive Neurodynamics · 2025</span>
+        <a class="proj-link" href="https://github.com/andrew-jeyabose/fmri-spatiotemporal-segmentation" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge">NIH R01 · $1.24M</span>
+      <div class="proj-title">Epilepsy AI — NIH R01NS125897</div>
+      <p class="proj-desc">Technical AI Lead for a $1.24M NIH grant at UNC Chapel Hill. Developing AI systems for epilepsy detection, brain network recovery quantification, and post-surgical outcome prediction from rs-fMRI data.</p>
+      <div class="proj-footer">
+        <span class="proj-pub">UNC Chapel Hill · Ongoing</span>
+        <a class="proj-link" href="https://orcid.org/0000-0003-3592-6543" target="_blank">ORCID ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="pubs">
+  <div class="section-label">04 — Publications</div>
+  <h2>Selected Papers</h2>
+  <div class="divider"></div>
+  <ul class="pub-list">
+    <li class="pub-item">
+      <span class="pub-num">01</span>
+      <div>
+        <div class="pub-title">Multimodal contrastive learning on rs-fMRI to quantify whole-brain network recovery.</div>
+        <div class="pub-meta"><span class="pub-venue">BioMedical Engineering OnLine</span> 24(1):125 · 2025 · Contrastive SSL · Multimodal embeddings</div>
+      </div>
+    </li>
+    <li class="pub-item">
+      <span class="pub-num">02</span>
+      <div>
+        <div class="pub-title">Interpretable Transformer Models for rs-fMRI Epilepsy Classification and Biomarker Discovery.</div>
+        <div class="pub-meta"><span class="pub-venue">medRxiv</span> · Under review at Scientific Reports · 2025 · Vision Transformers · Interpretability</div>
+      </div>
+    </li>
+    <li class="pub-item">
+      <span class="pub-num">03</span>
+      <div>
+        <div class="pub-title">A multimodal deep learning framework for functional brain network classification in rs-fMRI.</div>
+        <div class="pub-meta"><span class="pub-venue">Cognitive Neurodynamics</span> 19(1):1–13 · 2025 · Robinson B., Jeyabose A. et al.</div>
+      </div>
+    </li>
+    <li class="pub-item">
+      <span class="pub-num">04</span>
+      <div>
+        <div class="pub-title">Detection and Segmentation of Glioma Tumors Utilizing a UNet CNN.</div>
+        <div class="pub-meta"><span class="pub-venue">Journal of Computational Biology</span> 31(8):757–768 · 2024 · Segmentation · Medical imaging</div>
+      </div>
+    </li>
+    <li class="pub-item">
+      <span class="pub-num">05</span>
+      <div>
+        <div class="pub-title">Leveraging Vision Attention Transformers for Deepfake Detection.</div>
+        <div class="pub-meta"><span class="pub-venue">Diagnostics</span> 13(5):825 · 2023 · ViT · Image classification</div>
+      </div>
+    </li>
+  </ul>
+  <div style="margin-top:1.5rem;">
+    <a class="btn-outline" href="https://scholar.google.com/citations?user=4td6IKQAAAAJ" target="_blank">View all 90+ papers on Google Scholar ↗</a>
+  </div>
+</section>
+
+<!-- RECOGNITION -->
+<section id="recognition">
+  <div class="section-label">05 — Recognition</div>
+  <h2>Awards & Service</h2>
+  <div class="divider"></div>
+  <div class="rec-grid">
+    <div class="rec-card">
+      <div class="rec-icon">🏆</div>
+      <div class="rec-label">Top 2% Scientists Worldwide</div>
+      <div class="rec-sub">Stanford / Elsevier · 2024, 2025</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-icon">⚡</div>
+      <div class="rec-label">IEEE Senior Member</div>
+      <div class="rec-sub">Active</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-icon">📝</div>
+      <div class="rec-label">Associate Editor</div>
+      <div class="rec-sub">Scientific Reports · PLOS ONE · Frontiers in AI</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-icon">🔍</div>
+      <div class="rec-label">200+ Papers Reviewed</div>
+      <div class="rec-sub">IEEE · Elsevier · Springer · Nature</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-icon">🎓</div>
+      <div class="rec-label">Impact Scholar Mentor</div>
+      <div class="rec-sub">Neuromatch Academy · 2024–2025</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-icon">🏅</div>
+      <div class="rec-label">Best Paper Awards</div>
+      <div class="rec-sub">ICASE 2023 · ICBDML 2021 · ICACCS 2019</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">06 — Contact</div>
+  <h2>Let's Connect</h2>
+  <div class="divider" style="margin: 0 auto 3rem;"></div>
+  <div class="contact-card">
+    <p>Open to research collaborations and opportunities in vision foundation models, biological image analysis, and production ML systems.</p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:andrewj.research@gmail.com">✉ Email</a>
+      <a class="contact-link" href="https://www.linkedin.com/in/andrew-jeyabose/" target="_blank">in LinkedIn</a>
+      <a class="contact-link" href="https://scholar.google.com/citations?user=4td6IKQAAAAJ" target="_blank">Scholar</a>
+      <a class="contact-link" href="https://orcid.org/0000-0003-3592-6543" target="_blank">ORCID</a>
+      <a class="contact-link" href="https://github.com/andrew-jeyabose" target="_blank">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Andrew Jeyabose Sundar</span>
+  <span>AI Research Engineer · UNC Chapel Hill</span>
+</footer>
+
+</body>
+</html>
